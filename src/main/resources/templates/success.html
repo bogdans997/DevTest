@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Flight Confirmation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-image: url('https://www.example.com/fancy-flight-bg.jpg'); /* Replace with your actual background image */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      width: 50%;
+      margin: 5% auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      color: #007bff;
+      font-size: 2.5em;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #555;
+    }
+
+    strong {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    img {
+      margin-top: 20px;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      width: 200px;
+      height: 200px;
+    }
+
+    .button-container {
+      margin-top: 30px;
+    }
+
+    .button-container a {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .button-container a:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Passenger Code</h1>
+  <p>Your passenger code is: <strong th:text="${passenger.passengerCode}"></strong></p>
+
+  <p>QR Code:</p>
+  <img th:src="${qrCodeUrl}" alt="QR Code"/>
+
+  <div class="button-container">
+    <a href="/bookings">View Bookings</a>
+  </div>
+</div>
+
+</body>
+</html>

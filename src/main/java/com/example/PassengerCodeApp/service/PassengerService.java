@@ -3,6 +3,8 @@ package com.example.PassengerCodeApp.service;
 import com.example.PassengerCodeApp.model.Passenger;
 import com.example.PassengerCodeApp.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +17,9 @@ public class PassengerService {
 
     @Autowired
     private PassengerRepository passengerRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     public List<Passenger> getPassengers(String name) {
         if (name != null) {
@@ -57,7 +62,7 @@ public class PassengerService {
         }
     }
 
-    private String generatePassengerCode(Passenger passenger) {
+    public String generatePassengerCode(Passenger passenger) {
         StringBuilder code = new StringBuilder();
 
         code.append(getFlightDestinationCode(passenger));
@@ -67,8 +72,6 @@ public class PassengerService {
         code.append(getMealCode(passenger));
 
         code.append(getTravelClassCode(passenger));
-
-        code.append(getCountryCode(passenger.getAddress()));
 
         return code.toString();
     }
@@ -141,8 +144,16 @@ public class PassengerService {
         System.out.println("Sending email to " + passenger.getEmail() + " with passenger code: " + passenger.getPassengerCode());
     }
 
-    private String generateQRCode(String passengerCode) {
+    public String generateQRCode(String passengerCode) {
         String apiUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" + passengerCode + "&size=150x150";
         return apiUrl;
+    }
+
+    public void sendEmail(Passenger passenger) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(passenger.getEmail());
+        message.setSubject("Your Flight Code");
+        message.setText("Dear " + passenger.getName() + ",\nYour flight code is: " + passenger.getPassengerCode());
+        mailSender.send(message);
     }
 }
